@@ -1,3 +1,4 @@
+import Language.Haskell.TH (safe)
 -- Course: https://www.youtube.com/playlist?list=PLF1Z-APd9zK7usPMx3LGMZEHrECUGodd3
 
 -- Class 3
@@ -39,3 +40,36 @@ twice :: (a -> a) -> a -> a
 twice f x = f (f x)
 
 -- Class 6
+-- Conditional Expression
+-- safetail :: [a] -> [a]
+-- safetail xs = if null xs then [] else reverse (init (reverse xs))
+
+-- Guarded Equations
+-- safetail :: [a] -> [a]
+-- safetail xs | null xs = []
+--             | otherwise = reverse (init (reverse xs))
+
+-- Pattern Matching
+safetail :: [a] -> [a]
+safetail [] = []
+safetail (x : xs) = xs
+
+-- Conditional Expression
+-- (||) :: Bool -> Bool -> Bool
+-- x || y = if x then True else
+--          if y then True else False
+
+-- Guarded Equations
+-- (||) :: Bool -> Bool -> Bool
+-- x || y | x = True
+--        | y = True
+--        | otherwise = False
+
+-- Pattern Matching
+(||) :: Bool -> Bool -> Bool
+False || False = False
+_ || _ = True
+
+(&&) :: Bool -> Bool -> Bool
+-- x && y = if x then if y then True else False else False
+x && y = if x then y else False
