@@ -52,24 +52,24 @@ safetail [] = []
 safetail (x : xs) = xs
 
 -- Conditional Expression
--- (||) :: Bool -> Bool -> Bool
--- x || y = if x then True else
+-- (|||) :: Bool -> Bool -> Bool
+-- x ||| y = if x then True else
 --          if y then True else False
 
 -- Guarded Equations
--- (||) :: Bool -> Bool -> Bool
--- x || y | x = True
+-- (|||) :: Bool -> Bool -> Bool
+-- x ||| y | x = True
 --        | y = True
 --        | otherwise = False
 
 -- Pattern Matching
-(||) :: Bool -> Bool -> Bool
-False || False = False
-_ || _ = True
+(|||) :: Bool -> Bool -> Bool
+False ||| False = False
+_ ||| _ = True
 
-(&&) :: Bool -> Bool -> Bool
--- x && y = if x then if y then True else False else False
-x && y = if x then y else False
+(&&&) :: Bool -> Bool -> Bool
+-- x &&& y = if x then if y then True else False else False
+x &&& y = if x then y else False
 
 -- Class 7
 pyth :: Int -> Int -> Int -> Bool
@@ -89,3 +89,39 @@ perfects n = [x | x <- [1..n], perfect x]
 
 scalarProduct :: [Int] -> [Int] -> Int
 scalarProduct xs ys = sum [x * y | (x, y) <- zip xs ys]
+
+-- Class 8
+and :: [Bool] -> Bool
+and [] = True
+and (x : xs) = x && Main.and xs
+
+concat :: [[a]] -> [a]
+concat [] = []
+concat (xs : xss) = xs ++ Main.concat xss
+
+replicate :: Int -> a -> [a]
+replicate 0 _ = []
+replicate n val = val : Main.replicate (n - 1) val
+
+(!!!) :: [a] -> Int -> a
+xs !!! 0 = head xs
+[] !!! i = [] !!! 0
+(_ : xs) !!! i = xs !!! (i - 1)
+
+elem :: Eq a => a -> [a] -> Bool
+elem _ [] = False
+elem val (x : xs) = val == x || Main.elem val xs
+
+merge :: Ord a => [a] -> [a] -> [a]
+merge [] [] = []
+merge (x : xs) [] = x : merge xs []
+merge [] (y : ys) = y : merge [] ys
+merge (x : xs) (y : ys) | x <= y = x : merge xs (y : ys)
+                        | otherwise = y : merge (x : xs) ys
+
+msort :: Ord a => [a] -> [a]
+msort [] = []
+msort [x] = [x]
+msort xs = merge (msort left) (msort right)
+  where
+    (left, right) = splitAt (ceiling (fromIntegral (length xs) / 2)) xs
