@@ -104,24 +104,9 @@ replicate 0 _ = []
 replicate n val = val : Main.replicate (n - 1) val
 
 (!!!) :: [a] -> Int -> a
-xs !!! 0 = head xs
-[] !!! i = [] !!! 0
+(x : _) !!! 0 = x
 (_ : xs) !!! i = xs !!! (i - 1)
 
 elem :: Eq a => a -> [a] -> Bool
 elem _ [] = False
 elem val (x : xs) = val == x || Main.elem val xs
-
-merge :: Ord a => [a] -> [a] -> [a]
-merge [] [] = []
-merge (x : xs) [] = x : merge xs []
-merge [] (y : ys) = y : merge [] ys
-merge (x : xs) (y : ys) | x <= y = x : merge xs (y : ys)
-                        | otherwise = y : merge (x : xs) ys
-
-msort :: Ord a => [a] -> [a]
-msort [] = []
-msort [x] = [x]
-msort xs = merge (msort left) (msort right)
-  where
-    (left, right) = splitAt (ceiling (fromIntegral (length xs) / 2)) xs
