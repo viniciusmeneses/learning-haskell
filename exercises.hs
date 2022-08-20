@@ -110,3 +110,7 @@ replicate n val = val : Main.replicate (n - 1) val
 elem :: Eq a => a -> [a] -> Bool
 elem _ [] = False
 elem val (x : xs) = val == x || Main.elem val xs
+
+-- Class 10
+mapFilter :: (a -> b) -> (b -> Bool) -> [a] -> [b]
+mapFilter m f = filter f . map m
