@@ -1,15 +1,15 @@
 merge :: Ord a => [a] -> [a] -> [a]
-merge xs [] = xs
-merge [] ys = ys
-merge (x : xs) (y : ys) | x <= y = x : merge xs (y : ys)
-                        | otherwise = y : merge (x : xs) ys
+merge left [] = left
+merge [] right = right
+merge (n1 : left) (n2 : right) | n1 <= n2 = n1 : merge left (n2 : right)
+                               | otherwise = n2 : merge (n1 : left) right
 
 halve :: [a] -> ([a], [a])
-halve xs = splitAt (ceiling (fromIntegral (length xs) / 2)) xs
+halve list = splitAt middle list
+  where middle = ceiling ((fromIntegral . length) list / 2)
 
-mergeSort :: Ord a => [a] -> [a]
-mergeSort [] = []
-mergeSort [x] = [x]
-mergeSort xs = merge (mergeSort left) (mergeSort right)
-  where
-    (left, right) = halve xs
+sort :: Ord a => [a] -> [a]
+sort [] = []
+sort [n] = [n]
+sort list = merge (sort left) (sort right)
+  where (left, right) = halve list
