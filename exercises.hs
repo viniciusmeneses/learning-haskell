@@ -1,15 +1,15 @@
 -- Class 3
 -- double x = x + x
-quadruple y = double (double y)
+quadruple = double . double
 factorial n = product [1..n]
 average ns = sum ns `div` length ns
 
 -- Class 4
 -- otherLast xs = xs !! (length xs - 1)
-otherLast xs = head (reverse xs)
+otherLast = head . reverse
 
 -- otherInit xs = take (length xs - 1) xs
-otherInit xs = reverse (tail (reverse xs))
+otherInit= reverse . tail . reverse
 
 -- Class 5
 -- ['a', 'b', 'c'] :: [Char]
@@ -82,7 +82,7 @@ factors :: Int -> [Int]
 factors n = [x | x <- [1..n], n `mod` x == 0]
 
 perfect :: Int -> Bool
-perfect n = sum (init (factors n)) == n
+perfect n = sum (Prelude.init (factors n)) == n
 
 perfects :: Int -> [Int]
 perfects n = [x | x <- [1..n], perfect x]
@@ -92,12 +92,10 @@ scalarProduct xs ys = sum [x * y | (x, y) <- zip xs ys]
 
 -- Class 8
 and :: [Bool] -> Bool
-and [] = True
-and (x : xs) = x && Main.and xs
+and = foldr (&&) True
 
 concat :: [[a]] -> [a]
-concat [] = []
-concat (xs : xss) = xs ++ Main.concat xss
+concat = foldr (++) []
 
 replicate :: Int -> a -> [a]
 replicate 0 _ = []
@@ -114,3 +112,8 @@ elem val (x : xs) = val == x || Main.elem val xs
 -- Class 10
 mapFilter :: (a -> b) -> (b -> Bool) -> [a] -> [b]
 mapFilter m f = filter f . map m
+
+-- Class 11
+init :: [a] -> [a]
+init [_] = []
+init (x : xs) = x : Main.init xs
